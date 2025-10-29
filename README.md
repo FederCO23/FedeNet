@@ -80,9 +80,8 @@ Estimated Total Size (MB): 748.66
 ## Architecture diagram
 Below is the Netron‑generated plot of the ONNX export, annotated with stream boundaries and tensor shapes.
 
-```markdown
 ![FedeNet‑Tiny — ONNX/Netron Diagram](./sup-imgs/FedeNetTiny.arch.png)
-```
+
 
 **Reading tips (ONNX):**
 - **SiLU** appears as `Sigmoid → Mul` with both ops fed by the same tensor (`x * sigmoid(x)`).
