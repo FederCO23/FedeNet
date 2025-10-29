@@ -121,10 +121,11 @@ So the model is given both the **raw spatial signal** and an **engineered freque
 ---
 
 ## Pre‑ and post‑processing (recommended)
-- **ResizePad** to 540×960 while preserving aspect ratio (pads only when needed).
-- **AppendFrequencyMaps** to add 4 grayscale‑derived maps to RGB.
-- *(Optional)* **NormalizeRGBOnly**: standardize only the first 3 channels (ImageNet stats); pass through the extra frequency channels unchanged.
-- **Loss/activation**: use **BCEWithLogitsLoss** during training; apply `sigmoid` at inference if you need probabilities.
+- **ResizePad** to 540×960 while preserving aspect ratio (pads only when needed).  
+  *Note: this resolution corresponds to a 2× downsampling of Full HD (1080×1920) images.*
+- **AppendFrequencyMaps** to add four grayscale-derived maps to the RGB channels.
+- *(Optional)* **NormalizeRGBOnly**: standardize only the first three (RGB) channels and pass the additional frequency channels unchanged.
+- **Loss / Activation**: use **BCEWithLogitsLoss** during training, and apply a **sigmoid** at inference if probability outputs are required.
 
 ---
 
