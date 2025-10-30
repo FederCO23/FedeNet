@@ -17,7 +17,7 @@ This repository explores a **flip vs. not‑flip** detection challenge and a clo
 ---
 
 ## Inspiration
-We first experimented with standard transfer‑learning baselines: **ResNet‑18 (11.7M params, 18.7 GFLOPs)**, **MobileNetV2 (3.5M params, 3.1 GFLOPs)** and **EfficientNet‑B0 (5.3M params, 4.03 GFLOPs)**. After fine‑tuning, these models achieved **Precision ≈ 0.99** and **Recall ≈ 0.997** on our dataset. The EDA, however, revealed a notable correlation between the target labels (flip vs. not‑flip) and **image blur measured via Laplacian variance**. This led us to design **FedeNet**, a much **smaller** network that explicitly taps into this clue via frequency maps—seeking comparable accuracy with **far fewer parameters**.
+We first experimented with standard transfer‑learning baselines: **ResNet‑18 (11.7M params, 18.7 GFLOPs)**, **MobileNetV2 (3.5M params, 3.1 GFLOPs)** and **EfficientNet‑B0 (5.3M params, 4.03 GFLOPs)**. After fine‑tuning, these models achieved **Precision ≈ 0.99** and **Recall ≈ 0.997** on our dataset. The EDA, however, revealed a notable correlation between the target labels (flip vs. not‑flip) and **image blur measured via Laplacian variance**. This led us to design **FedeNet**, a much **smaller** network that explicitly taps into this clue via frequency maps, seeking comparable accuracy with **far fewer parameters**.
 
 ---
 
