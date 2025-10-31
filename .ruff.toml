@@ -1,0 +1,12 @@
+line-length = 100
+target-version = "py39"
+
+[lint]
+select = [
+  "E", "F",  # pyflakes/pycodestyle basics
+  "I",       # isort (import order)
+]
+ignore = []
+
+[format]
+quote-style = "double"

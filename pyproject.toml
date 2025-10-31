@@ -1,0 +1,18 @@
+[project]
+name = "fedenet"
+version = "0.1.0"
+description = "Tiny CNN + frequency maps (RGB+S/L/V/E) for flip vs notflip."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "Federico Pérez Bessi" }]
+dependencies = ["torch>=2.2,<3", "torchvision>=0.17,<1", "Pillow>=9.0"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff", "black", "mypy"]
