@@ -1,3 +1,4 @@
+# .github/workflows/ci.yml
 name: CI
 
 on:
@@ -25,11 +26,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.py }}
-          cache: 'pip'
+          cache: pip
 
       - name: Install
         run: |
-          python -m pip install --upgrade pip
+          python -m pip install --upgrade pip setuptools wheel
           pip install -e ".[dev]"
 
       - name: Ruff (lint)
@@ -50,6 +51,15 @@ jobs:
             --junitxml=pytest.xml \
             --cov-fail-under=85
 
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: os-${{ matrix.os }},py-${{ matrix.py }}
+          fail_ci_if_error: true
+          verbose: true
+
       - name: Upload test & coverage artifacts
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
@@ -58,5 +68,6 @@ jobs:
           path: |
             coverage.xml
             pytest.xml
+
 
 
