@@ -8,7 +8,7 @@ from .transforms import (
 )
 from .weights import load_rgb_pretrained_into_fedenet
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 __all__ = [
     "FedeNetTiny",

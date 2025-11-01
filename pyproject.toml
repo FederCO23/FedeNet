@@ -1,6 +1,6 @@
 [project]
 name = "fedenet"
-version = "0.2.0"
+version = "0.2.1"
 description = "Tiny dual-stream CNN with frequency maps for flip vs notflip."
 readme = "README.md"
 requires-python = ">=3.10"

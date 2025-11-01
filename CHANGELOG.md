@@ -5,7 +5,7 @@ This project follows [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [0.2.0] - 2025-11-01  
+## [0.2.1] - 2025-11-01  
 ### Major Update — Modular Package, ONNX Export & Full CI  
 
 **Highlights**  
