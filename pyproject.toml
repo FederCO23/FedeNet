@@ -1,12 +1,15 @@
 [project]
 name = "fedenet"
-version = "0.1.0"
-description = "Tiny CNN + frequency maps (RGB+S/L/V/E) for flip vs notflip."
+version = "0.2.0"
+description = "Tiny dual-stream CNN with frequency maps for flip vs notflip."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
+authors = [{ name="Federico Bessi" }]
 license = { file = "LICENSE" }
-authors = [{ name = "Federico Pérez Bessi" }]
-dependencies = ["torch>=2.2,<3", "torchvision>=0.17,<1", "Pillow>=9.0"]
+dependencies = [
+  "torch>=2.2",
+  "torchvision>=0.17",
+]
 classifiers = [
   "Programming Language :: Python :: 3",
   "License :: OSI Approved :: Apache Software License",
@@ -15,4 +18,20 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest", "ruff", "black", "mypy"]
+dev = ["ruff>=0.6", "mypy>=1.8", "pytest>=8.2", "pytest-cov>=5.0"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+strict = true
+
+[tool.pytest.ini_options]
+addopts = "-q"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"

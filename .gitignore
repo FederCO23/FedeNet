@@ -1,0 +1,34 @@
+# ---- Python / build ----
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+ruff_cache/
+.coverage
+htmlcov/
+
+# ---- Editors / OS ----
+.DS_Store
+.idea/
+.vscode/
+
+# ---- Data / outputs ----
+checkpoints/
+data/
+
+# ---- Local backups / scratch ----
+*.bak
+*~
+*.swp
+*.tmp
+*.py_
+README.md.backup
+FedeNet.py_
+FedeNet_BKP.py_
+# Also ignore the legacy monolithic file to avoid re-adding it
+FedeNet.py
+EOF

@@ -1,4 +1,4 @@
-## FedeNet — Dual‑Stream CNN for Spatial × Frequency Cues
+		## FedeNet — Dual‑Stream CNN for Spatial × Frequency Cues
 
 > **A tiny, efficient CNN that fuses spatial features with fixed frequency maps to make robust binary decisions.**
 
