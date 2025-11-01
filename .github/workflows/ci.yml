@@ -43,13 +43,7 @@ jobs:
         run: python -m mypy fedenet
 
       - name: Pytest (with coverage)
-        run: |
-          pytest -q \
-            --cov=fedenet \
-            --cov-report=xml \
-            --cov-report=term-missing \
-            --junitxml=pytest.xml \
-            --cov-fail-under=85
+        run: pytest -q --cov=fedenet --cov-report=xml --cov-report=term-missing --junitxml=pytest.xml --cov-fail-under=85
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
