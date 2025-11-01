@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import cast
-
 import torch
 import torch.nn.functional as F
 import torchvision.transforms.functional as TF
@@ -32,7 +30,7 @@ class ResizePad:
                 img = TF.to_pil_image(img if img.max() > 1 else (img * 255).byte())
             else:
                 raise ValueError("Expected CHW tensor.")
-            
+
         w, h = img.size
         scale = min(self.out_w / w, self.out_h / h)
         new_w, new_h = int(w * scale), int(h * scale)
@@ -64,7 +62,7 @@ class AppendFrequencyMaps(nn.Module):
     """
 
     def __init__(
-        self, 
+        self,
         maps: tuple[str, ...] = ("sobel", "laplacian", "highpass", "localvar"),
         localvar_window: int = 7,
         robust_pct: float = 0.99,
@@ -74,10 +72,10 @@ class AppendFrequencyMaps(nn.Module):
         self.maps = tuple(maps)
         self.win = int(localvar_window)
         self.robust_pct = float(robust_pct)
-        
+
         if not (0.0 < self.robust_pct < 1.0):
             raise ValueError("robust_pct must be in (0,1).")
-                       
+
         # typed buffers
         self.box: Tensor
         self.kx: Tensor
@@ -85,50 +83,39 @@ class AppendFrequencyMaps(nn.Module):
         self.lap: Tensor
         self.hpf: Tensor
         self.eps: Tensor
-        
+
         # Box window for local mean/variance
         self.register_buffer(
             "box",
-            torch.ones(1, 1, self.win, self.win, dtype=torch.float32)
-            / float(self.win * self.win),
+            torch.ones(1, 1, self.win, self.win, dtype=torch.float32) / float(self.win * self.win),
         )
         # Sobel kernels
         self.register_buffer(
             "kx",
-            torch.tensor([[1, 0, -1],
-                          [2, 0, -2],
-                          [1, 0, -1]], dtype=torch.float32).view(1, 1, 3, 3),
+            torch.tensor([[1, 0, -1], [2, 0, -2], [1, 0, -1]], dtype=torch.float32).view(
+                1, 1, 3, 3
+            ),
         )
         self.register_buffer(
             "ky",
-            torch.tensor([[1, 2, 1],
-                          [0, 0, 0],
-                          [-1, -2, -1]], dtype=torch.float32).view(1, 1, 3, 3),
+            torch.tensor([[1, 2, 1], [0, 0, 0], [-1, -2, -1]], dtype=torch.float32).view(
+                1, 1, 3, 3
+            ),
         )
         # Laplacian & high-pass kernels
         self.register_buffer(
             "lap",
-            torch.tensor([[0, 1, 0],
-                          [1, -4, 1],
-                          [0, 1, 0]], dtype=torch.float32).view(1, 1, 3, 3),
+            torch.tensor([[0, 1, 0], [1, -4, 1], [0, 1, 0]], dtype=torch.float32).view(1, 1, 3, 3),
         )
         self.register_buffer(
             "hpf",
-            torch.tensor([[-1, -1, -1],
-                          [-1, 8, -1],
-                          [-1, -1, -1]], dtype=torch.float32).view(1, 1, 3, 3),
+            torch.tensor([[-1, -1, -1], [-1, 8, -1], [-1, -1, -1]], dtype=torch.float32).view(
+                1, 1, 3, 3
+            ),
         )
         # Epsilon for numerical stability
         self.register_buffer("eps", torch.tensor(1e-12, dtype=torch.float32))
 
-        # Cast buffers so mypy knows they're Tensors (not Union[Tensor, Module])
-        self.box = cast(torch.Tensor, self.box)
-        self.kx  = cast(torch.Tensor, self.kx)
-        self.ky  = cast(torch.Tensor, self.ky)
-        self.lap = cast(torch.Tensor, self.lap)
-        self.hpf = cast(torch.Tensor, self.hpf)
-        self.eps = cast(torch.Tensor, self.eps)
-            
     def _gray(self, x: Tensor) -> Tensor:
         # x: (B,3,H,W) or (3,H,W) in [0,1]
         if x.ndim == 3:
@@ -149,7 +136,7 @@ class AppendFrequencyMaps(nn.Module):
         mean2 = F.conv2d(xg * xg, self.box, padding=self.win // 2)
         var = (mean2 - mean * mean).clamp_min(0.0).sqrt()
         return var
-    
+
     def _robust01(self, t: Tensor) -> Tensor:
         """Scale per-sample to [0,1] using symmetric robust quantiles around the center."""
         # t: (B,1,H,W)
@@ -163,7 +150,7 @@ class AppendFrequencyMaps(nn.Module):
         den = (hi - lo).clamp_min(1e-6)
         scaled = (flat - lo) / den
         return scaled.reshape(B, C, H, W).clamp_(0.0, 1.0)
-        
+
     def forward(self, x: Tensor) -> Tensor:
         single = False
         if x.ndim == 3:
@@ -198,7 +185,7 @@ class AppendFrequencyMaps(nn.Module):
             maps_out.append(self._robust01(hpf))
         if "localvar" in self.maps:
             maps_out.append(self._robust01(lvar))
-        
+
         if maps_out:
             freq = torch.cat(maps_out, dim=1)  # (B, K, H, W)
             base = x[:, :3]
@@ -210,6 +197,7 @@ class AppendFrequencyMaps(nn.Module):
             out = out.squeeze(0)
         return out
 
+
 # --------------------------------------------------------------------------------------
 # Normalizer kept here for completeness with factories below
 # --------------------------------------------------------------------------------------
@@ -219,24 +207,26 @@ class NormalizeRGBOnly(nn.Module):
     def __init__(self, mean=IMAGENET_MEAN, std=IMAGENET_STD):
         super().__init__()
         mean_t: Tensor = torch.tensor(mean, dtype=torch.float32).view(3, 1, 1)
-        std_t:  Tensor = torch.tensor(std,  dtype=torch.float32).view(3, 1, 1)
+        std_t: Tensor = torch.tensor(std, dtype=torch.float32).view(3, 1, 1)
         self.register_buffer("mean", mean_t)
-        self.register_buffer("std",  std_t)
+        self.register_buffer("std", std_t)
 
     def forward(self, x: Tensor) -> Tensor:
         from typing import cast
+
         mean = cast(Tensor, self.mean)
-        std  = cast(Tensor, self.std)
+        std = cast(Tensor, self.std)
         x = x.clone()
         x[:3] = (x[:3] - mean) / std
         return x
+
 
 # --------------------------------------------------------------------------------------
 # Factories with knobs exposed
 # --------------------------------------------------------------------------------------
 def inference_540x960(
     maps: tuple[str, ...] = ("sobel", "laplacian", "highpass", "localvar"),
-    localvar_window: int =7,
+    localvar_window: int = 7,
     robust_pct: float = 0.99,
 ):
     return transforms.Compose(

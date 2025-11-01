@@ -18,5 +18,5 @@ __all__ = [
     "ResizePad",
     "AppendFrequencyMaps",
     "NormalizeRGBOnly",
-    "load_rgb_pretrained_into_fedenet"
+    "load_rgb_pretrained_into_fedenet",
 ]

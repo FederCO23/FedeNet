@@ -15,13 +15,8 @@ class BlurPool2d(nn.Module):
     """
 
     def __init__(
-        self, 
-        channels: int,
-        filt_size: int = 3,
-        stride: int = 2,
-        pad_mode: str = "reflect"
-        ):
-        
+        self, channels: int, filt_size: int = 3, stride: int = 2, pad_mode: str = "reflect"
+    ):
         super().__init__()
         if filt_size not in (3, 5):
             raise ValueError("filt_size must be 3 or 5")
@@ -72,15 +67,11 @@ class StemAA(nn.Module):
         self.conv_rgb = nn.Conv2d(3, out_ch, kernel_size=3, stride=1, padding=1, bias=False)
 
         # Extra-channels path (optional)
-        self.conv_extra : Optional[nn.Conv2d] = None
+        self.conv_extra: Optional[nn.Conv2d] = None
         if self.has_extra:
             self.conv_extra = nn.Conv2d(
-                k_extra, 
-                out_ch, 
-                kernel_size=3, 
-                stride=1, 
-                padding=1, 
-                bias=False)
+                k_extra, out_ch, kernel_size=3, stride=1, padding=1, bias=False
+            )
 
         self.bn = nn.BatchNorm2d(out_ch)
         self.act = nn.SiLU(inplace=True)
@@ -207,9 +198,9 @@ class FedeHead(nn.Module):
         nn.init.zeros_(lin1.bias)
 
     def forward(self, xs: Tensor, xf: Tensor) -> Tensor:
-        x = torch.cat([xs, xf], dim=1)        # (B, in_ch, H, W)
-        x = self.pool(x).flatten(1)           # (B, in_ch)
-        x = self.mlp(x)                       # (B, 1)
+        x = torch.cat([xs, xf], dim=1)  # (B, in_ch, H, W)
+        x = self.pool(x).flatten(1)  # (B, in_ch)
+        x = self.mlp(x)  # (B, 1)
         return x
 
 
@@ -229,14 +220,14 @@ class FedeNetTiny(nn.Module):
         stem_out = 32
         self.stem = StemAA(in_ch=in_ch, out_ch=stem_out, filt_size=3)
         self.spatial = SpatialStream(in_ch=stem_out)
-        self.freq = FrequencyStream(in_ch=stem_out, out_ch=8)   # 64 + 8 = 72
+        self.freq = FrequencyStream(in_ch=stem_out, out_ch=8)  # 64 + 8 = 72
         self.head = FedeHead(in_ch=72, hidden=32, p_drop=0.1)
 
     def forward(self, x: Tensor) -> Tensor:
-        x = self.stem(x)               # (B,32,H/2,W/2)
-        xs = self.spatial(x)           # (B,64, ...)
-        xf = self.freq(x)              # (B, 8, ...)
-        return self.head(xs, xf)       # (B,1)
+        x = self.stem(x)  # (B,32,H/2,W/2)
+        xs = self.spatial(x)  # (B,64, ...)
+        xf = self.freq(x)  # (B, 8, ...)
+        return self.head(xs, xf)  # (B,1)
 
 
 # --------------------------------------------------------------------------------------

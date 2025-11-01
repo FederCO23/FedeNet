@@ -1,4 +1,10 @@
-		## FedeNet — Dual‑Stream CNN for Spatial × Frequency Cues
+## FedeNet — Dual‑Stream CNN for Spatial × Frequency Cues
+
+[![CI](https://github.com/FederCO23/FedeNet/actions/workflows/ci.yml/badge.svg)](https://github.com/FederCO23/FedeNet/actions/workflows/ci.yml)
+![lint: ruff](https://img.shields.io/badge/lint-ruff-blue)
+![types: mypy](https://img.shields.io/badge/types-mypy-4B8BBE)
+![tests: pytest](https://img.shields.io/badge/tests-pytest-0A9EDC)
+[![Coverage](https://codecov.io/gh/FederCO23/FedeNet/branch/main/graph/badge.svg)](https://app.codecov.io/gh/FederCO23/FedeNet)
 
 > **A tiny, efficient CNN that fuses spatial features with fixed frequency maps to make robust binary decisions.**
 

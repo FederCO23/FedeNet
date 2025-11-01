@@ -5,6 +5,21 @@ This project follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.2.0] - 2025-11-01  
+### Major Update — Modular Package, ONNX Export & Full CI  
+
+**Highlights**  
+- Refactored into a clean Python package structure (`fedenet/`) with modular files and typing.  
+- Added **FedeNetTiny**, a dual-stream CNN integrating spatial and frequency maps.  
+- Introduced robust preprocessing pipeline (`ResizePad`, `AppendFrequencyMaps`, `NormalizeRGBOnly`).  
+- Added ONNX export (`export.py`) and `torch.hub` entrypoint (`hubconf.py`).  
+- Implemented full CI workflow with linting (ruff), type checking (mypy), and tests (pytest + coverage).  
+- Achieved **94% total coverage** and 100% pass rate.  
+
+**Summary**  
+This release transforms *FedeNet* into a maintainable, production-ready library with clear structure, typed modules, and reproducible ONNX export.
+
+
 ## [0.2.0] - 2025-11-01
 ### Major Update — Library Refactor & Full Test Coverage
 This version transforms **FedeNet** from a single-file prototype into a clean, modular Python package with professional-grade development standards.

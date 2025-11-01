@@ -18,7 +18,20 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-dev = ["ruff>=0.6", "mypy>=1.8", "pytest>=8.2", "pytest-cov>=5.0"]
+dev = [
+  "ruff>=0.6",
+  "mypy==1.11.2",
+  "pytest>=8.2",
+  "pytest-cov>=5.0",
+  "onnx>=1.16,<1.18",
+  "onnxscript>=0.1.0,<0.2",
+  "protobuf<6.0",
+]
+export = [
+  "onnx>=1.16,<1.18",
+  "onnxscript>=0.1.0,<0.2",
+  "protobuf<6.0",
+]
 
 [tool.ruff]
 line-length = 100
@@ -28,9 +41,13 @@ target-version = "py310"
 python_version = "3.10"
 ignore_missing_imports = true
 strict = true
+incremental = false
 
 [tool.pytest.ini_options]
 addopts = "-q"
+filterwarnings = [
+  "ignore:Saving ONNX model to a BytesIO object is deprecated:DeprecationWarning:torch.onnx"
+]
 
 [build-system]
 requires = ["setuptools>=68", "wheel"]
