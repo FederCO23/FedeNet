@@ -146,13 +146,6 @@ This warm‑starts RGB features while letting the network learn how to exploit t
 
 ---
 
-## Files
-- `FedeNet.py` – full implementation (model + transforms + hybrid init helper)
-- `sup-imgs/FedeNetTiny.arch.png` – Netron diagram used above
-- `FedeNetTiny.onnx` (optional) – export for visualization
-
----
-
 ## Citation
 If you use **FedeNet** in academic or industrial projects, please reference this repository as follows:
 
