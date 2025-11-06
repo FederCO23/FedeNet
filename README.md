@@ -16,6 +16,7 @@ FedeNet is a compact convolutional neural network designed to exploit **two comp
 
 Although small (≈23k params, ~2.13 GFLOPs at 540×960), FedeNet aims for **high accuracy and interpretability** by explicitly separating spatial and frequency information flows, letting each specialize and then **cooperate** in the classifier head.
 
+![FedeNet‑Tiny - Main](./sup-imgs/FedeNet_github.png)
 ---
 
 ## Objective
